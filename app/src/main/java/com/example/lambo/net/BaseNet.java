@@ -14,6 +14,7 @@ public abstract class BaseNet {
     public static void setContext(Context _context) {
         context = _context;
         if (queue != null){
+
             queue = Volley.newRequestQueue(context);
         }
     }
