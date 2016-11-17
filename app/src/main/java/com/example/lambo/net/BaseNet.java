@@ -34,7 +34,6 @@ public abstract class BaseNet implements Runnable, Response.ErrorListener, Respo
     public static void setContext(Context _context) {
         context = _context;
         if (queue == null) {
-
             queue = Volley.newRequestQueue(context);
         }
     }
@@ -42,7 +41,7 @@ public abstract class BaseNet implements Runnable, Response.ErrorListener, Respo
     @Override
     public void run() {
         NetRequest request = new NetRequest(method, url, body, this, this);
-        request.setShouldCache(false);
+        request.setShouldCache(method == GET);
         queue.add(request);
     }
 

@@ -25,6 +25,7 @@ import com.example.lambo.net.CatsNet;
 import com.example.lambo.net.GoodsListNet;
 import com.example.lambo.net.LoginNet;
 import com.example.lambo.other.URL;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements BaseNet.NetCallBa
     ArrayList<CatClass> cats;
     ArrayList<CatClass> catChildren;
     ArrayList<GoodsClass> goodsList;
+    GoodsListAdapter goodsListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +51,8 @@ public class MainActivity extends AppCompatActivity implements BaseNet.NetCallBa
         lv_cat.setOnItemClickListener(this);
         lv_cat_tree.setOnItemClickListener(this);
         lv_goods.setOnItemClickListener(this);
-        lv_cat_tree.setHasHF(false, false);
-        lv_goods.setAdapter(new GoodsListAdapter());
+        goodsListAdapter = new GoodsListAdapter(this);
+        lv_goods.setAdapter(goodsListAdapter);
         URL.throwNet(new CatsNet(this));
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("phonenum", "18306677680");
@@ -71,11 +73,13 @@ public class MainActivity extends AppCompatActivity implements BaseNet.NetCallBa
             lv_cat.setAdapter(new SimpleAdapter(this, getCatsList(cats), R.layout.lvh_item, new String[]{"name"}, new int[]{R.id.tv}));
             if (cats.size() > 0) {
                 catChildren = cats.get(0).getChildren();
+                initGoods(catChildren);
                 lv_cat_tree.setAdapter(new SimpleAdapter(this, getCatsList(catChildren),
                         R.layout.list_item, new String[]{"name"}, new int[]{R.id.tv}));
             }
         } else if (net.getClass().getName().contains("CatChildrenNet")) {
             catChildren = ((CatChildrenNet) net).cat.getChildren();
+            initGoods(catChildren);
             lv_cat_tree.setAdapter(new SimpleAdapter(this, getCatsList(catChildren),
                     R.layout.list_item, new String[]{"name"}, new int[]{R.id.tv}));
         } else if (net.getClass().getName().contains("GoodsListNet")) {
@@ -88,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements BaseNet.NetCallBa
                 hashMap.put("goodsName", goodsList.get(i).getGoodsName());
                 list.add(hashMap);
             }
-            ((GoodsListAdapter)lv_goods.getAdapter()).setList(goodsList);
+            goodsListAdapter.setList(goodsList);
         }
     }
 
@@ -103,6 +107,12 @@ public class MainActivity extends AppCompatActivity implements BaseNet.NetCallBa
                 break;
             case R.id.lv_goods:
                 break;
+        }
+    }
+
+    private void initGoods(ArrayList<CatClass> list){
+        if (list != null && list.size() > 0){
+            URL.throwNet(new GoodsListNet(list.get(0).getCatId(),this));
         }
     }
 
@@ -121,11 +131,13 @@ public class MainActivity extends AppCompatActivity implements BaseNet.NetCallBa
     public class GoodsListAdapter extends BaseAdapter{
         private ArrayList<GoodsClass> mList;
         private Context mContext;
-        public GoodsListAdapter(){
+        public GoodsListAdapter(Context mContext){
+            this.mContext = mContext;
         }
 
         public void setList(ArrayList<GoodsClass> mList) {
             this.mList = mList;
+            notifyDataSetChanged();
         }
 
         @Override
@@ -145,20 +157,23 @@ public class MainActivity extends AppCompatActivity implements BaseNet.NetCallBa
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder viewHolder = (ViewHolder) convertView.getTag();
-            if (viewHolder == null){
+            ViewHolder viewHolder;
+            if (convertView == null){
+                viewHolder = new ViewHolder();
                 convertView = LayoutInflater.from(mContext).inflate(R.layout.goods_item,null);
                 viewHolder.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
                 viewHolder.tv_desc = (TextView) convertView.findViewById(R.id.tv_desc);
                 viewHolder.tv_price = (TextView) convertView.findViewById(R.id.tv_price);
                 viewHolder.img = (ImageView) convertView.findViewById(R.id.img);
                 convertView.setTag(viewHolder);
+            }else{
+                viewHolder = (ViewHolder) convertView.getTag();
             }
             viewHolder.tv_name.setText(mList.get(position).getGoodsName());
             viewHolder.tv_desc.setText(mList.get(position).getDescription());
             String img = mList.get(position).getImages();
             String[] imgs = img.split(",");
-            viewHolder.img.setImageURI(Uri.parse(imgs[0]));
+            ImageLoader.getInstance().displayImage(URL.QINIU + imgs[0], viewHolder.img);
             return convertView;
         }
         class ViewHolder{

@@ -7,6 +7,7 @@ import com.example.lambo.net.BaseNet;
  */
 public class URL {
     public final static String HOST = "https://api.baicaiyx.com/v1";
+    public final static String QINIU = "https://o86r83cfz.qnssl.com";
     public final static String GET_CATS = HOST + "/categories";
     public final static String GET_CATS_CHILDREN = HOST + "/categories/tree/";
     public final static String GET_GOODS_LIST = HOST + "/goods/list";
