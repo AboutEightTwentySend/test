@@ -1,16 +1,15 @@
 package com.example.lambo.DataClass;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
  * Created by sEEyOU on 2016/11/16.
  */
-public class CatsClass implements Serializable {
+public class CatClass implements Serializable {
     private int catId;
     private String catName;
-    private ArrayList<CatsClass> children;
+    private ArrayList<CatClass> children;
 
     public int getCatId() {
         return catId;
@@ -28,11 +27,11 @@ public class CatsClass implements Serializable {
         this.catName = catName;
     }
 
-    public ArrayList<CatsClass> getChildren() {
+    public ArrayList<CatClass> getChildren() {
         return children;
     }
 
-    public void setChildren(ArrayList<CatsClass> children) {
+    public void setChildren(ArrayList<CatClass> children) {
         this.children = children;
     }
 

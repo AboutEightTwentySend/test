@@ -1,5 +1,7 @@
 package com.example.lambo.net;
 
+import android.util.Log;
+
 import com.android.volley.VolleyError;
 
 import org.json.JSONObject;
@@ -11,7 +13,7 @@ import java.util.HashMap;
  */
 public class LoginNet extends BaseNet {
     public LoginNet(HashMap hashMap){
-        initNet(POST, "https://api.baicaiyx.com/v1/auth/login", new JSONObject(hashMap));
+        initNet(POST, "https://api.baicaiyx.com/v1/auth/login", hashMap);
     }
     @Override
     public void netErrorResponse(VolleyError error) {
@@ -20,6 +22,6 @@ public class LoginNet extends BaseNet {
 
     @Override
     public void netResponse(String response) {
-
+        Log.d(TAG, url+"netResponse: "+response);
     }
 }

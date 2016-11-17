@@ -17,10 +17,13 @@ import android.widget.ListView;
 import android.widget.Scroller;
 import android.widget.TextView;
 
+import java.sql.Ref;
+
 /**
  * Created by Administrator on 2016/11/13.
  */
 public class MyListView extends ListView {
+    private boolean hasH,hasF = false;
     private final static String TAG = "lambo";
     public final static String REFRESH = "REFRESH";
     public final static String RESET_H = "RESET_H";
@@ -70,6 +73,8 @@ public class MyListView extends ListView {
         footerView = new LinearLayout(context);
         tvF = new TextView(context);
         tvF.setText("FOOTER");
+        if (!hasH) tvH.setVisibility(INVISIBLE);
+        if (!hasF) tvF.setVisibility(GONE);
         footerView.addView(tvF);
         footer.addView(footerView);
         footer.setOnClickListener(new OnClickListener() {
@@ -111,22 +116,24 @@ public class MyListView extends ListView {
                 int offset = (int) (e.getRawY() - lastY);
                 lastY = e.getRawY();
 //                Log.d(TAG, tvH.getHeight() +"onTouchEvent: "+offset);
-                if (getFirstVisiblePosition() == 0 && (tvH.getHeight() > 0 || offset > 0)) {
+                if (getFirstVisiblePosition() == 0 && (tvH.getHeight() > 0 || offset > 0) && getBottomMargin(footerView) <= 0) {
+                    action = REFRESH;
                     updateHeaderView(tvH.getHeight() + offset / OFFSET_RADIO);
-                } else if (getLastVisiblePosition() == getCount() - 1 && (getBottomMargin(footerView) > 0 || offset < 0)) {
+                } else if (getLastVisiblePosition() == getCount() - 1 && (getBottomMargin(footerView) > 0 || offset < 0) && tvH.getHeight() <= 0) {
+                    action = LOAD_MORE;
                     updateFooterView(getBottomMargin(footerView) - offset / OFFSET_RADIO);
                 }
                 break;
             default:
                 lastY = -1;
-                if (getFirstVisiblePosition() == 0){
+                if (getFirstVisiblePosition() == 0 && action== REFRESH){
                     if (tvH.getHeight() >= headerH) {
                         setState(REFRESH);
                     } else {
                         setState(RESET_H);
                     }
                 }
-                if (getLastVisiblePosition() == getCount() - 1){
+                if (getLastVisiblePosition() == getCount() - 1 && action == LOAD_MORE){
                     if (getBottomMargin(footerView) > footerH) {
                         setState(LOAD_MORE);
                     } else {
@@ -139,16 +146,14 @@ public class MyListView extends ListView {
     }
 
     private void updateHeaderView(int height) {
-        Log.d(TAG, "updateHeaderView: "+height);
+        if (height<0) height = 0;//出现负数会有弹跳（回弹）
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) tvH.getLayoutParams();
         lp.height = height;
         tvH.setLayoutParams(lp);
         setSelection(0);//scroll to top
-
         invalidate();
     }
     public void resetHeader(int height) {
-        action = REFRESH;
         scroller.startScroll(0, tvH.getHeight(), 0, height, SCROLL_DURATION);
         invalidate();
     }
@@ -160,17 +165,16 @@ public class MyListView extends ListView {
         invalidate();
     }
     public void resetFooter() {
-        action = LOAD_MORE;
         scroller.startScroll(0, getBottomMargin(footerView), 0, -getBottomMargin(footerView), SCROLL_DURATION);
         invalidate();
     }
 
     public void setState(String state) {
-        Log.d(TAG, "setState: "+state);
         this.state = state;
         switch (state){
             case REFRESH:
-                resetHeader(headerH - tvH.getHeight());
+                if(hasH) resetHeader(headerH - tvH.getHeight());
+                else resetHeader(-tvH.getHeight());
                 break;
             case RESET_H:
                 resetHeader(-tvH.getHeight());
@@ -200,5 +204,10 @@ public class MyListView extends ListView {
     public int getBottomMargin(LinearLayout ll){
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) ll.getLayoutParams();
         return lp.bottomMargin;
+    }
+
+    public void setHasHF(boolean hasH,boolean hasF){
+        this.hasH = hasH;
+        this.hasF = hasF;
     }
 }
