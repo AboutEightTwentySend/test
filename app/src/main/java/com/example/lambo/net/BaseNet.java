@@ -11,6 +11,10 @@ import com.example.lambo.other.NetRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 /**
  * Created by Administrator on 2016/11/15.
  */
@@ -30,7 +34,7 @@ public abstract class BaseNet implements Runnable, Response.ErrorListener, Respo
     public static void setContext(Context _context) {
         context = _context;
         if (queue == null) {
-            
+
             queue = Volley.newRequestQueue(context);
         }
     }
@@ -58,22 +62,35 @@ public abstract class BaseNet implements Runnable, Response.ErrorListener, Respo
         }
     }
 
-    public void initNet(int method, String url,JSONObject body) {
-        this.url = url;
+    public void initNet(int method, String url, HashMap has) {
         this.method = method;
-        this.body = body;
+        Iterator i = has.entrySet().iterator();
+        if (method == GET){
+            if (has.size() > 0) url += "?";
+            while (i.hasNext()) {
+                Map.Entry entry = (Map.Entry) i.next();
+                url += entry.getKey() + "=" + entry.getValue();
+                if (i.hasNext()) url += "&";
+            }
+        }else{
+            this.body = new JSONObject(has);
+        }
+        this.url = url;
     }
+
     public void initNet(int method, String url) {
-        this.url = url;
         this.method = method;
+        this.url = url;
         this.body = null;
     }
 
     public abstract void netErrorResponse(VolleyError error);
+
     public abstract void netResponse(String response);
 
-    public interface NetCallBack{
+    public interface NetCallBack {
         void netErrorResponse(BaseNet net);
+
         void netResponse(BaseNet net);
     }
 }

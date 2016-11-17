@@ -3,15 +3,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.lambo.MainActivity">
 
-    <com.example.lambo.UI.MyListView
-        android:id="@+id/lv"
+    <com.example.lambo.UI.HorizontalListView
+        android:id="@+id/lv_cat"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:background="@color/theme" />
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </com.example.lambo.UI.MyListView>
+        android:layout_height="match_parent"
+        android:layout_below="@id/lv_cat"
+        android:orientation="horizontal">
+
+        <com.example.lambo.UI.MyListView
+            android:id="@+id/lv_cat_tree"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="2" />
+
+        <com.example.lambo.UI.MyListView
+            android:id="@+id/lv_goods"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
 </RelativeLayout>
