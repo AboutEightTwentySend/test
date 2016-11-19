@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.example.lambo.DataClass.CatClass;
@@ -165,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements BaseNet.NetCallBa
             ViewHolder viewHolder;
             if (convertView == null){
                 viewHolder = new ViewHolder();
-                convertView = LayoutInflater.from(MainActivity.this).inflate(R.layout.cats_listh_item,null);
+                convertView = LayoutInflater.from(MainActivity.this).inflate(R.layout.cats_item,null);
                 viewHolder.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
                 convertView.setTag(viewHolder);
             }else{
