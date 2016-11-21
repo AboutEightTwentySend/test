@@ -10,4 +10,6 @@
     <color name="theme">#f24c38</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
+    <color name="line">#dddddd</color>
+    <color name="bg">#fcfcfc</color>
 </resources>

@@ -1,10 +1,9 @@
 package com.example.lambo.net;
 
 import android.util.Log;
-import android.view.View;
 
 import com.android.volley.VolleyError;
-import com.example.lambo.DataClass.ZAXJGClass;
+import com.example.lambo.dataclass.ZAXJGClass;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

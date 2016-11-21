@@ -4,8 +4,6 @@ import android.util.Log;
 
 import com.android.volley.VolleyError;
 
-import org.json.JSONObject;
-
 import java.util.HashMap;
 
 /**

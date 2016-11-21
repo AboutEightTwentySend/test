@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.lambo.MainActivity">
+    tools:context=".activity.MainActivity">
 
-    <com.example.lambo.UI.HorizontalListView
+    <com.example.lambo.ui.HorizontalListView
         android:id="@+id/lv_cat"
         android:layout_width="fill_parent"
         android:layout_height="40dp"
@@ -17,7 +17,7 @@
         android:layout_below="@id/lv_cat"
         android:orientation="horizontal">
 
-        <com.example.lambo.UI.MyListView
+        <com.example.lambo.ui.MyListView
             android:id="@+id/lv_cat_tree"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -27,7 +27,7 @@
             android:footerDividersEnabled="false"
             android:headerDividersEnabled="false" />
 
-        <com.example.lambo.UI.MyListView
+        <com.example.lambo.ui.MyListView
             android:id="@+id/lv_goods"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

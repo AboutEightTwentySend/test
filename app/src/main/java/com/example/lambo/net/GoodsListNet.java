@@ -3,13 +3,11 @@ package com.example.lambo.net;
 import android.util.Log;
 
 import com.android.volley.VolleyError;
-import com.example.lambo.DataClass.CatClass;
-import com.example.lambo.DataClass.GoodsListClass;
+import com.example.lambo.dataclass.GoodsList;
 import com.example.lambo.other.URL;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -19,7 +17,7 @@ public class GoodsListNet extends BaseNet{
     final static String TAG = "lambo";
     public NetCallBack callBack;
     public int catId;
-    public GoodsListClass goodsListData;
+    public GoodsList goodsListData;
     public GoodsListNet(int catId, NetCallBack callBack){
         HashMap<String,Integer> hasMap = new HashMap<>();
         hasMap.put("catId",catId);
@@ -37,7 +35,7 @@ public class GoodsListNet extends BaseNet{
     public void netResponse(String response) {
         Log.d(TAG, "netResponse: "+response);
         Gson gson = new Gson();
-        this.goodsListData = gson.fromJson(response, new TypeToken<GoodsListClass>() {}.getType());
+        this.goodsListData = gson.fromJson(response, new TypeToken<GoodsList>() {}.getType());
         Log.d(TAG, "netResponse: "+goodsListData.toString());
         callBack.netResponse(this);
     }

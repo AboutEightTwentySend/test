@@ -1,46 +1,26 @@
-package com.example.lambo;
+package com.example.lambo.activity;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.lambo.DataClass.CatClass;
-import com.example.lambo.DataClass.GoodsClass;
-import com.example.lambo.DataClass.ZAXJGClass;
-import com.example.lambo.UI.HorizontalListView;
-import com.example.lambo.UI.MyListView;
-import com.example.lambo.adapter.MyAdapter;
+import com.example.lambo.dataclass.ZAXJGClass;
+import com.example.lambo.R;
 import com.example.lambo.net.BaseNet;
-import com.example.lambo.net.CatChildrenNet;
-import com.example.lambo.net.CatsNet;
-import com.example.lambo.net.GoodsListNet;
-import com.example.lambo.net.LoginNet;
 import com.example.lambo.net.ZAXJGnet;
 import com.example.lambo.other.URL;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
-import jxl.Sheet;
 import jxl.Workbook;
 import jxl.write.Label;
 import jxl.write.WritableSheet;

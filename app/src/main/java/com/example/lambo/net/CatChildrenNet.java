@@ -3,7 +3,7 @@ package com.example.lambo.net;
 import android.util.Log;
 
 import com.android.volley.VolleyError;
-import com.example.lambo.DataClass.CatClass;
+import com.example.lambo.dataclass.Cat;
 import com.example.lambo.other.URL;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -15,7 +15,7 @@ public class CatChildrenNet  extends BaseNet{
     final static String TAG = "lambo";
     public NetCallBack callBack;
     public int catId;
-    public CatClass cat;
+    public Cat cat;
     public CatChildrenNet(int catId,NetCallBack callBack){
         initNet(GET, URL.GET_CATS_CHILDREN);
         this.callBack = callBack;
@@ -32,7 +32,7 @@ public class CatChildrenNet  extends BaseNet{
     public void netResponse(String response) {
         Gson gson = new Gson();
         Log.d(TAG, "netResponse: "+response);
-        this.cat = gson.fromJson(response, new TypeToken<CatClass>() {}.getType());
+        this.cat = gson.fromJson(response, new TypeToken<Cat>() {}.getType());
         callBack.netResponse(this);
     }
 }

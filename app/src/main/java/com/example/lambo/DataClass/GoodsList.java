@@ -1,4 +1,4 @@
-package com.example.lambo.DataClass;
+package com.example.lambo.dataclass;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -6,9 +6,9 @@ import java.util.ArrayList;
 /**
  * Created by sEEyOU on 2016/11/17.
  */
-public class GoodsListClass implements Serializable {
+public class GoodsList implements Serializable {
     private Object query;
-    private ArrayList<GoodsClass> rows;
+    private ArrayList<Goods> rows;
     private boolean hasMore;
 
     public Object getQuery() {
@@ -19,11 +19,11 @@ public class GoodsListClass implements Serializable {
         this.query = query;
     }
 
-    public ArrayList<GoodsClass> getRows() {
+    public ArrayList<Goods> getRows() {
         return rows;
     }
 
-    public void setRows(ArrayList<GoodsClass> rows) {
+    public void setRows(ArrayList<Goods> rows) {
         this.rows = rows;
     }
 

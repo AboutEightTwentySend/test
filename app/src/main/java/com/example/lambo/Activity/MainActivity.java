@@ -1,4 +1,4 @@
-package com.example.lambo;
+package com.example.lambo.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,10 +11,13 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.lambo.DataClass.CatClass;
-import com.example.lambo.DataClass.GoodsClass;
-import com.example.lambo.UI.HorizontalListView;
-import com.example.lambo.UI.MyListView;
+import com.example.lambo.dataclass.Cat;
+import com.example.lambo.R;
+import com.example.lambo.dataclass.Goods;
+import com.example.lambo.dialog.GoodsDialog;
+import com.example.lambo.net.GoodsDetailNet;
+import com.example.lambo.ui.HorizontalListView;
+import com.example.lambo.ui.MyListView;
 import com.example.lambo.adapter.MyAdapter;
 import com.example.lambo.net.BaseNet;
 import com.example.lambo.net.CatChildrenNet;
@@ -33,12 +36,13 @@ public class MainActivity extends AppCompatActivity implements BaseNet.NetCallBa
     HorizontalListView lv_cat;
     MyListView lv_cat_tree;
     MyListView lv_goods;
-    ArrayList<CatClass> cats;
-    ArrayList<CatClass> catChildren;
-    ArrayList<GoodsClass> goodsList;
+    ArrayList<Cat> cats;
+    ArrayList<Cat> catChildren;
+    ArrayList<Goods> goodsList;
     GoodsListAdapter goodsListAdapter = new GoodsListAdapter();
     CatsListAdapter CLHAdapter = new CatsListAdapter(true);
     CatsListAdapter CLAdapter = new CatsListAdapter(false);
+    GoodsDialog goodsDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +94,10 @@ public class MainActivity extends AppCompatActivity implements BaseNet.NetCallBa
                 list.add(hashMap);
             }
             goodsListAdapter.setList(goodsList);
+        } else if (net.getClass().getName().contains("GoodsDetailNet")) {
+            if(goodsDialog == null) goodsDialog = new GoodsDialog(this);
+            goodsDialog.setGoods(((GoodsDetailNet) net).goodsDetail);
+            if (!goodsDialog.isShowing()) goodsDialog.show();
         }
     }
 
@@ -100,21 +108,21 @@ public class MainActivity extends AppCompatActivity implements BaseNet.NetCallBa
                 URL.throwNet(new CatChildrenNet(cats.get(position).getCatId(), MainActivity.this));
                 break;
             case R.id.lv_cat_tree:
-                URL.throwNet(new GoodsListNet(catChildren.get(position-1).getCatId(),this));
+                URL.throwNet(new GoodsListNet(catChildren.get(position - 1).getCatId(), this));
                 break;
             case R.id.lv_goods:
                 break;
         }
     }
 
-    private void initGoods(ArrayList<CatClass> list){
-        if (list != null && list.size() > 0){
-            URL.throwNet(new GoodsListNet(list.get(0).getCatId(),this));
+    private void initGoods(ArrayList<Cat> list) {
+        if (list != null && list.size() > 0) {
+            URL.throwNet(new GoodsListNet(list.get(0).getCatId(), this));
         }
     }
 
     //提取list cat 中的name展示列表
-    private List<HashMap<String, String>> getCatsList(ArrayList<CatClass> cats) {
+    private List<HashMap<String, String>> getCatsList(ArrayList<Cat> cats) {
         List<HashMap<String, String>> list = new ArrayList<>();
         if (cats == null) return list;
         for (int i = 0; i < cats.size(); i++) {
@@ -125,19 +133,19 @@ public class MainActivity extends AppCompatActivity implements BaseNet.NetCallBa
         return list;
     }
 
-    public class GoodsListAdapter extends MyAdapter<GoodsClass>{
+    public class GoodsListAdapter extends MyAdapter<Goods> {
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder;
-            if (convertView == null){
+            if (convertView == null) {
                 viewHolder = new ViewHolder();
-                convertView = LayoutInflater.from(MainActivity.this).inflate(R.layout.goods_item,null);
+                convertView = LayoutInflater.from(MainActivity.this).inflate(R.layout.goods_item, null);
                 viewHolder.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
                 viewHolder.tv_desc = (TextView) convertView.findViewById(R.id.tv_desc);
                 viewHolder.tv_price = (TextView) convertView.findViewById(R.id.tv_price);
                 viewHolder.img = (ImageView) convertView.findViewById(R.id.img);
                 convertView.setTag(viewHolder);
-            }else{
+            } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
             viewHolder.tv_name.setText(mList.get(position).getGoodsName());
@@ -145,39 +153,50 @@ public class MainActivity extends AppCompatActivity implements BaseNet.NetCallBa
             String img = mList.get(position).getImages();
             String[] imgs = img.split(",");
             ImageLoader.getInstance().displayImage(URL.QINIU + imgs[0], viewHolder.img);
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    URL.throwNet(new GoodsDetailNet(mList.get(position).getGoodsId(), MainActivity.this));
+                }
+            });
             return convertView;
         }
-        class ViewHolder{
+
+        class ViewHolder {
             public TextView tv_name;
             public TextView tv_desc;
             public TextView tv_price;
             public ImageView img;
         }
     }
-    public class CatsListAdapter extends MyAdapter<CatClass>{
+
+    public class CatsListAdapter extends MyAdapter<Cat> {
         boolean horizontal;
-        public CatsListAdapter(boolean horizontal){
+
+        public CatsListAdapter(boolean horizontal) {
             this.horizontal = horizontal;
         }
+
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder;
-            if (convertView == null){
+            if (convertView == null) {
                 viewHolder = new ViewHolder();
-                convertView = LayoutInflater.from(MainActivity.this).inflate(R.layout.cats_item,null);
+                convertView = LayoutInflater.from(MainActivity.this).inflate(R.layout.cats_item, null);
                 viewHolder.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
                 convertView.setTag(viewHolder);
-            }else{
+            } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
             viewHolder.tv_name.setText(mList.get(position).getCatName());
             viewHolder.tv_name.getPaint().setFakeBoldText(horizontal);
-            if (horizontal){
+            if (horizontal) {
                 viewHolder.tv_name.setTextColor(Color.parseColor("#ffffff"));
             }
             return convertView;
         }
-        class ViewHolder{
+
+        class ViewHolder {
             public TextView tv_name;
         }
     }

@@ -11,6 +11,7 @@ public class URL {
     public final static String GET_CATS = HOST + "/categories";
     public final static String GET_CATS_CHILDREN = HOST + "/categories/tree/";
     public final static String GET_GOODS_LIST = HOST + "/goods/list";
+    public final static String GET_GOODS_DETAIL = HOST + "/goods/detail";
 
 
     public static void throwNet(BaseNet net){

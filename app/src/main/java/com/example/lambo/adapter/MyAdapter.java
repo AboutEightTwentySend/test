@@ -1,20 +1,17 @@
 package com.example.lambo.adapter;
 
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.example.lambo.DataClass.GoodsClass;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by sEEyOU on 2016/11/17.
  */
 public abstract class MyAdapter<T> extends BaseAdapter {
+    public MyAdapter(){
+
+    }
+
     public ArrayList<T> mList;
 
     public void setList(ArrayList<T> mList) {

@@ -1,6 +1,4 @@
-package com.example.lambo.DataClass;
-
-import com.google.gson.annotations.SerializedName;
+package com.example.lambo.dataclass;
 
 import java.io.Serializable;
 import java.util.ArrayList;

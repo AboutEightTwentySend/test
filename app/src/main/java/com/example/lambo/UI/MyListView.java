@@ -1,23 +1,17 @@
-package com.example.lambo.UI;
+package com.example.lambo.ui;
 
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Scroller;
 import android.widget.TextView;
-
-import java.sql.Ref;
 
 /**
  * Created by Administrator on 2016/11/13.

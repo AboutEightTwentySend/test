@@ -1,4 +1,4 @@
-package com.example.lambo.DataClass;
+package com.example.lambo.dataclass;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -6,10 +6,10 @@ import java.util.ArrayList;
 /**
  * Created by sEEyOU on 2016/11/16.
  */
-public class CatClass implements Serializable {
+public class Cat implements Serializable {
     private int catId;
     private String catName;
-    private ArrayList<CatClass> children;
+    private ArrayList<Cat> children;
 
     public int getCatId() {
         return catId;
@@ -27,11 +27,11 @@ public class CatClass implements Serializable {
         this.catName = catName;
     }
 
-    public ArrayList<CatClass> getChildren() {
+    public ArrayList<Cat> getChildren() {
         return children;
     }
 
-    public void setChildren(ArrayList<CatClass> children) {
+    public void setChildren(ArrayList<Cat> children) {
         this.children = children;
     }
 
