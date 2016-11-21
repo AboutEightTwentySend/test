@@ -1,4 +1,4 @@
-package com.example.lambo.dataclasss;
+package com.example.lambo.dataclass;
 
 import com.google.gson.annotations.SerializedName;
 

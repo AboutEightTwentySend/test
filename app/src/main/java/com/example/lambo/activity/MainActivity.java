@@ -1,4 +1,4 @@
-package com.example.lambo.activitys;
+package com.example.lambo.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,19 +11,19 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.lambo.dataclasss.Cat;
+import com.example.lambo.dataclass.Cat;
 import com.example.lambo.R;
-import com.example.lambo.dataclasss.Goods;
+import com.example.lambo.dataclass.Goods;
 import com.example.lambo.dialog.GoodsDialog;
-import com.example.lambo.nets.GoodsDetailNet;
-import com.example.lambo.uis.HorizontalListView;
-import com.example.lambo.uis.MyListView;
+import com.example.lambo.net.GoodsDetailNet;
+import com.example.lambo.ui.HorizontalListView;
+import com.example.lambo.ui.MyListView;
 import com.example.lambo.adapter.MyAdapter;
-import com.example.lambo.nets.BaseNet;
-import com.example.lambo.nets.CatChildrenNet;
-import com.example.lambo.nets.CatsNet;
-import com.example.lambo.nets.GoodsListNet;
-import com.example.lambo.nets.LoginNet;
+import com.example.lambo.net.BaseNet;
+import com.example.lambo.net.CatChildrenNet;
+import com.example.lambo.net.CatsNet;
+import com.example.lambo.net.GoodsListNet;
+import com.example.lambo.net.LoginNet;
 import com.example.lambo.other.URL;
 import com.nostra13.universalimageloader.core.ImageLoader;
 

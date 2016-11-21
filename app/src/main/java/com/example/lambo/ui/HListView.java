@@ -1,4 +1,4 @@
-package com.example.lambo.uis;
+package com.example.lambo.ui;
 
 import android.annotation.TargetApi;
 import android.content.Context;

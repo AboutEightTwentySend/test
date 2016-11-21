@@ -1,4 +1,4 @@
-package com.example.lambo.activitys;
+package com.example.lambo.activity;
 
 import android.os.Bundle;
 import android.os.Environment;
@@ -9,10 +9,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.lambo.dataclasss.ZAXJGClass;
+import com.example.lambo.dataclass.ZAXJGClass;
 import com.example.lambo.R;
-import com.example.lambo.nets.BaseNet;
-import com.example.lambo.nets.ZAXJGnet;
+import com.example.lambo.net.BaseNet;
+import com.example.lambo.net.ZAXJGnet;
 import com.example.lambo.other.URL;
 
 import java.io.File;

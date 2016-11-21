@@ -1,4 +1,4 @@
-package com.example.lambo.nets;
+package com.example.lambo.net;
 
 import android.util.Log;
 

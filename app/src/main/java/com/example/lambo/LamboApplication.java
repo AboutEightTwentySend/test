@@ -3,7 +3,7 @@ package com.example.lambo;
 import android.app.Application;
 import android.graphics.Bitmap;
 
-import com.example.lambo.nets.BaseNet;
+import com.example.lambo.net.BaseNet;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;

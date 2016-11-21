@@ -1,7 +1,9 @@
-package com.example.lambo.nets;
+package com.example.lambo.net;
+
+import android.util.Log;
 
 import com.android.volley.VolleyError;
-import com.example.lambo.dataclasss.Goods;
+import com.example.lambo.dataclass.Cat;
 import com.example.lambo.other.URL;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -9,16 +11,16 @@ import com.google.gson.reflect.TypeToken;
 /**
  * Created by sEEyOU on 2016/11/17.
  */
-public class GoodsDetailNet extends BaseNet {
+public class CatChildrenNet  extends BaseNet{
     final static String TAG = "lambo";
     public NetCallBack callBack;
-    public int goodsId;
-    public Goods goodsDetail;
-
-    public GoodsDetailNet(int goodsId, NetCallBack callBack) {
-        initNet(GET, URL.GET_GOODS_DETAIL + "/" + goodsId);
+    public int catId;
+    public Cat cat;
+    public CatChildrenNet(int catId,NetCallBack callBack){
+        initNet(GET, URL.GET_CATS_CHILDREN);
         this.callBack = callBack;
-        this.goodsId = goodsId;
+        this.catId = catId;
+        url += catId;
     }
 
     @Override
@@ -29,7 +31,8 @@ public class GoodsDetailNet extends BaseNet {
     @Override
     public void netResponse(String response) {
         Gson gson = new Gson();
-        this.goodsDetail = gson.fromJson(response, new TypeToken<Goods>() {}.getType());
+        Log.d(TAG, "netResponse: "+response);
+        this.cat = gson.fromJson(response, new TypeToken<Cat>() {}.getType());
         callBack.netResponse(this);
     }
 }

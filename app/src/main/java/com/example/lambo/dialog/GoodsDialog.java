@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import com.example.lambo.R;
 import com.example.lambo.adapter.MyAdapter;
-import com.example.lambo.dataclasss.Attr;
-import com.example.lambo.dataclasss.Goods;
+import com.example.lambo.dataclass.Attr;
+import com.example.lambo.dataclass.Goods;
 import com.example.lambo.other.URL;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
