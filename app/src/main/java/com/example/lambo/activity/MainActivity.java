@@ -54,9 +54,9 @@ public class MainActivity extends AppCompatActivity implements BaseNet.NetCallBa
         lv_cat.setOnItemClickListener(this);
         lv_cat_tree.setOnItemClickListener(this);
         lv_goods.setOnItemClickListener(this);
-        lv_goods.setAdapter(goodsListAdapter);
         lv_cat.setAdapter(CLHAdapter);
         lv_cat_tree.setAdapter(CLAdapter);
+        lv_goods.setAdapter(goodsListAdapter);
         URL.throwNet(new CatsNet(this));
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("phonenum", "18306677680");
@@ -111,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements BaseNet.NetCallBa
                 URL.throwNet(new GoodsListNet(catChildren.get(position - 1).getCatId(), this));
                 break;
             case R.id.lv_goods:
+                URL.throwNet(new GoodsDetailNet(goodsList.get(position).getGoodsId(), MainActivity.this));
                 break;
         }
     }
@@ -153,12 +154,6 @@ public class MainActivity extends AppCompatActivity implements BaseNet.NetCallBa
             String img = mList.get(position).getImages();
             String[] imgs = img.split(",");
             ImageLoader.getInstance().displayImage(URL.QINIU + imgs[0], viewHolder.img);
-            convertView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    URL.throwNet(new GoodsDetailNet(mList.get(position).getGoodsId(), MainActivity.this));
-                }
-            });
             return convertView;
         }
 

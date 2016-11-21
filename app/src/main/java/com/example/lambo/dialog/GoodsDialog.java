@@ -1,10 +1,16 @@
 package com.example.lambo.dialog;
 
+import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Context;
+import android.os.Build;
+import android.text.Layout;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -15,6 +21,7 @@ import com.example.lambo.adapter.MyAdapter;
 import com.example.lambo.dataclass.Attr;
 import com.example.lambo.dataclass.Goods;
 import com.example.lambo.other.URL;
+import com.example.lambo.ui.FlowLayout;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
@@ -72,13 +79,32 @@ public class GoodsDialog extends Dialog{
         return attrs;
     }
     public class AttrsAdapter extends MyAdapter<Attr>{
+        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             convertView = LayoutInflater.from(context).inflate(R.layout.attr_item,null);
             TextView textView = (TextView) convertView.findViewById(R.id.attName);
-            LinearLayout ll = (LinearLayout) convertView.findViewById(R.id.attrLl);
             textView.setText(mList.get(position).getAttrName());
-            ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            FlowLayout flowLayout = (FlowLayout) convertView.findViewById(R.id.fl);
+            flowLayout.setHorizontalSpacing(10);
+            flowLayout.setVerticalSpacing(10);
+            ArrayList<Attr.GoodsAttr> goodsAttrs = mList.get(position).getGoodsAttrs();
+            for (int i = 0; i < goodsAttrs.size(); i++) {
+                TextView tv_value = new TextView(context);
+                tv_value.setText(goodsAttrs.get(i).getAttrValue());
+                tv_value.setTextSize(TypedValue.COMPLEX_UNIT_PX,context.getResources().getDimension(R.dimen.normal));
+                tv_value.setMinWidth(50);
+                tv_value.setBackground(context.getResources().getDrawable(R.drawable.red_click));
+                tv_value.setTextColor(context.getResources().getColor(R.color.white));
+                tv_value.setPadding(10, 5, 10, 5);
+                flowLayout.addView(tv_value);
+                tv_value.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d(TAG, "onClick: ");
+                    }
+                });
+            }
             return convertView;
         }
     }
