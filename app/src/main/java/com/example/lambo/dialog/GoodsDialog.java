@@ -2,12 +2,9 @@ package com.example.lambo.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.text.Layout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -15,9 +12,8 @@ import android.widget.TextView;
 
 import com.example.lambo.R;
 import com.example.lambo.adapter.MyAdapter;
-import com.example.lambo.dataclass.Attr;
-import com.example.lambo.dataclass.Goods;
-import com.example.lambo.net.BaseNet;
+import com.example.lambo.dataclasss.Attr;
+import com.example.lambo.dataclasss.Goods;
 import com.example.lambo.other.URL;
 import com.nostra13.universalimageloader.core.ImageLoader;
 

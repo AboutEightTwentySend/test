@@ -1,4 +1,4 @@
-package com.example.lambo.ui;
+package com.example.lambo.uis;
 
 import android.content.Context;
 import android.database.DataSetObserver;

@@ -1,4 +1,4 @@
-package com.example.lambo.net;
+package com.example.lambo.nets;
 
 import android.content.Context;
 

@@ -1,6 +1,6 @@
 package com.example.lambo.other;
 
-import com.example.lambo.net.BaseNet;
+import com.example.lambo.nets.BaseNet;
 
 /**
  * Created by sEEyOU on 2016/11/16.

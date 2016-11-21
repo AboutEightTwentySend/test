@@ -3,7 +3,7 @@ package com.example.lambo;
 import android.app.Application;
 import android.graphics.Bitmap;
 
-import com.example.lambo.net.BaseNet;
+import com.example.lambo.nets.BaseNet;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -32,7 +32,7 @@ public class LamboApplication extends Application {
                 .imageScaleType(ImageScaleType.IN_SAMPLE_INT)
 //                .showImageOnLoading(R.drawable.default_header)
 //                .showImageForEmptyUri(R.drawable.default_header)
-//                .showImageOnFail(R.drawable.default_header)
+//                .showImageOnFail(R.drawable.default_h eader)
                 .cacheInMemory(true).cacheOnDisk(true).build();
         imgConfig = new ImageLoaderConfiguration.Builder(this)
                 .threadPriority(Thread.NORM_PRIORITY - 2) // default 设置当前线程的优先级

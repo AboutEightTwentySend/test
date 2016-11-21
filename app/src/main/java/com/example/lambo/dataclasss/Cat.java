@@ -1,4 +1,4 @@
-package com.example.lambo.dataclass;
+package com.example.lambo.dataclasss;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -1,9 +1,9 @@
-package com.example.lambo.net;
+package com.example.lambo.nets;
 
 import android.util.Log;
 
 import com.android.volley.VolleyError;
-import com.example.lambo.dataclass.Cat;
+import com.example.lambo.dataclasss.Cat;
 import com.example.lambo.other.URL;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
