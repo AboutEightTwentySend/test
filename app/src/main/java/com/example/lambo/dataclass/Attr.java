@@ -46,7 +46,7 @@ public class Attr implements Serializable {
 
     @Override
     public String toString() {
-        return "Attr{" +
+        return "{" +
                 "attrId:" + attrId +
                 ", attrName:'" + attrName + '\'' +
                 ", children:" + children +
@@ -94,7 +94,7 @@ public class Attr implements Serializable {
 
         @Override
         public String toString() {
-            return "GoodsAttr{" +
+            return "{" +
                     "attrValue:'" + attrValue + '\'' +
                     ", goodsAttrId:" + goodsAttrId +
                     ", attrId:" + attrId +

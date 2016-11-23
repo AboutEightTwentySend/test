@@ -11,8 +11,17 @@ public class Product implements Serializable{
     private String note;
     private ArrayList<price> prices;
     private int productId;
+    private String productAttrIds;
     private String productName;
     private String unit;
+
+    public String getProductAttrIds() {
+        return productAttrIds;
+    }
+
+    public void setProductAttrIds(String productAttrIds) {
+        this.productAttrIds = productAttrIds;
+    }
 
     public String getImages() {
         return images;

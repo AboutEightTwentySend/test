@@ -20,6 +20,7 @@ import com.example.lambo.R;
 import com.example.lambo.adapter.MyAdapter;
 import com.example.lambo.dataclass.Attr;
 import com.example.lambo.dataclass.Goods;
+import com.example.lambo.dataclass.Product;
 import com.example.lambo.other.URL;
 import com.example.lambo.ui.FlowLayout;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -36,8 +37,10 @@ public class GoodsDialog extends Dialog{
     private AttrsAdapter attrsAdapter;
     private TextView tv_goods_name,tv_desc;
     private ImageView imageView;
+    private int goodsAttrId = 0;
+    private ArrayList<Integer> showGoodsAttrIds;
     public GoodsDialog(Context context) {
-        super(context,R.style.FullHeightDialog);
+        super(context, R.style.FullHeightDialog);
         this.context = context;
         initView(context);
     }
@@ -60,6 +63,7 @@ public class GoodsDialog extends Dialog{
         if (goods.getImages() != null){
             ImageLoader.getInstance().displayImage(URL.QINIU+goods.getImages().split(",")[0],imageView);
         }
+        showGoodsAttrIds = getGoodsAttrIds(goods.getAttrs(),goodsAttrId,new ArrayList<Integer>());
         attrsAdapter.setList(getAttrs(null, goods.getAttrs().get(0)));
     }
     public void initView(Context context){
@@ -81,31 +85,75 @@ public class GoodsDialog extends Dialog{
     public class AttrsAdapter extends MyAdapter<Attr>{
         @TargetApi(Build.VERSION_CODES.LOLLIPOP)
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             convertView = LayoutInflater.from(context).inflate(R.layout.attr_item,null);
             TextView textView = (TextView) convertView.findViewById(R.id.attName);
             textView.setText(mList.get(position).getAttrName());
             FlowLayout flowLayout = (FlowLayout) convertView.findViewById(R.id.fl);
             flowLayout.setHorizontalSpacing(10);
             flowLayout.setVerticalSpacing(10);
-            ArrayList<Attr.GoodsAttr> goodsAttrs = mList.get(position).getGoodsAttrs();
+            final ArrayList<Attr.GoodsAttr> goodsAttrs = mList.get(position).getGoodsAttrs();
             for (int i = 0; i < goodsAttrs.size(); i++) {
                 TextView tv_value = new TextView(context);
                 tv_value.setText(goodsAttrs.get(i).getAttrValue());
-                tv_value.setTextSize(TypedValue.COMPLEX_UNIT_PX,context.getResources().getDimension(R.dimen.normal));
+                tv_value.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.normal));
                 tv_value.setMinWidth(50);
-                tv_value.setBackground(context.getResources().getDrawable(R.drawable.red_click));
+                tv_value.setBackgroundColor(context.getResources().getColor(R.color.line));
                 tv_value.setTextColor(context.getResources().getColor(R.color.white));
                 tv_value.setPadding(10, 5, 10, 5);
                 flowLayout.addView(tv_value);
+                String a = "";
+                for (int j = 0; j < showGoodsAttrIds.size(); j++) {
+                    if(showGoodsAttrIds.get(j) == goodsAttrs.get(i).getGoodsAttrId()){
+                        tv_value.setBackground(context.getResources().getDrawable(R.drawable.btn_white));
+                        tv_value.setTextColor(context.getResources().getColor(R.color.black));
+//                        break;
+                    }
+                    a += showGoodsAttrIds.get(j)+" ";
+                }
+                Log.d(TAG, showGoodsAttrIds.size() + "getView: " + a);
+                final int finalI = i;
                 tv_value.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.d(TAG, "onClick: ");
+                        setGoodsAttrId(goodsAttrs.get(finalI).getGoodsAttrId());
                     }
                 });
             }
             return convertView;
         }
+    }
+
+    public ArrayList<Integer> getGoodsAttrIds(ArrayList<Attr> attrs,int goodsAttrId,ArrayList<Integer> goodsAttrIds){
+//        Log.d(TAG, goodsAttrId+"getGoodsAttrIds: "+attrs.toString());
+        for (int i = 0; i < attrs.size(); i++) {
+            Attr attr = attrs.get(i);
+            for (int j = 0; j < attr.getGoodsAttrs().size(); j++) {
+                int nowGoodsAttrId = attr.getGoodsAttrs().get(j).getGoodsAttrId();
+                if (nowGoodsAttrId == goodsAttrId || goodsAttrId == 0){//goodsAttrId=0 初始展示所有
+                    Log.d(TAG, goodsAttrId+"getGoodsAttrIds: "+nowGoodsAttrId);
+                    goodsAttrIds.add(nowGoodsAttrId);
+                    ArrayList<Attr> childrenAttrs = attr.getChildren();
+                    if (childrenAttrs!= null){
+                        for (int k = 0; k < childrenAttrs.size(); k++) {
+                            for (int l = 0; l < childrenAttrs.get(k).getGoodsAttrs().size(); l++) {
+                                getGoodsAttrIds(childrenAttrs,childrenAttrs.get(k).getGoodsAttrs().get(l).getGoodsAttrId(),goodsAttrIds);
+                            }
+                        }
+                    }
+                    break;
+                }else if(attr.getChildren() != null){
+                    goodsAttrIds.add(nowGoodsAttrId);
+                    getGoodsAttrIds(attr.getChildren(),goodsAttrId,goodsAttrIds);
+                }
+            }
+        }
+        return goodsAttrIds;
+    }
+
+    public void setGoodsAttrId(int goodsAttrId) {
+        this.goodsAttrId = goodsAttrId;
+        showGoodsAttrIds = getGoodsAttrIds(goods.getAttrs(),goodsAttrId,showGoodsAttrIds);
+        attrsAdapter.notifyDataSetChanged();
     }
 }
