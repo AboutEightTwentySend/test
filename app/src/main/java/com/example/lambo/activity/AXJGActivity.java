@@ -19,13 +19,18 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
+import jxl.CellType;
+import jxl.CellView;
 import jxl.Workbook;
-import jxl.write.Label;
-import jxl.write.WritableSheet;
-import jxl.write.WritableWorkbook;
-import jxl.write.WriteException;
+import jxl.write.*;
+import jxl.write.Number;
+import jxl.write.biff.CellValue;
 
 public class AXJGActivity extends AppCompatActivity implements BaseNet.NetCallBack {
     final static String TAG = "lambo";
@@ -123,7 +128,7 @@ public class AXJGActivity extends AppCompatActivity implements BaseNet.NetCallBa
         if (num == 0) {
             role = "工头";
         }
-        WritableSheet sheet = workbook.createSheet(role+"账单列表", num);
+        WritableSheet sheet = workbook.createSheet(role + "账单列表", num);
         sheet.addCell(new Label(0, 0, "序号"));
         sheet.addCell(new Label(1, 0, role));
         sheet.addCell(new Label(2, 0, "地址"));
@@ -132,18 +137,35 @@ public class AXJGActivity extends AppCompatActivity implements BaseNet.NetCallBa
         sheet.addCell(new Label(5, 0, "金额"));
         sheet.addCell(new Label(6, 0, "时间"));
         sheet.addCell(new Label(7, 0, "合计天数"));
+        sheet.setColumnView(3, 100);
         Log.d(TAG, "createSheet: " + list.toString());
         for (int i = 0; i < list.size(); i++) {
+            DateFormat df = new DateFormat("yyyy-MM-dd");
+            WritableCellFormat wcfDF = new WritableCellFormat(df);
+            String hours = list.get(i).getWork_hours();
+            if (hours == "" || hours == null) hours = "0";
             sheet.addCell(new Label(0, i+1, String.valueOf(i + 1)));
             sheet.addCell(new Label(1, i+1, list.get(i).getForeman_name()));
             sheet.addCell(new Label(2, i+1, list.get(i).getAddr()));
-            sheet.addCell(new Label(3, i+1, list.get(i).getStarttime()));
+            sheet.addCell(new DateTime(3, i+1, formatterDate(list.get(i).getStarttime()), wcfDF));
             sheet.addCell(new Label(4, i+1, translateWorkType(list.get(i).getWork_type())));
-            sheet.addCell(new Label(5, i+1, list.get(i).getWage()));
-            sheet.addCell(new Label(6, i+1, list.get(i).getWork_hours()));
-            sheet.addCell(new Label(7, i+1, String.valueOf(list.get(i).getEqual_day())));
+            sheet.addCell(new Number(5, i + 1, Float.valueOf(list.get(i).getWage())));
+            sheet.addCell(new Number(6, i + 1, Float.valueOf(hours)));
+            sheet.addCell(new Number(7, i + 1, list.get(i).getEqual_day()));
         }
         return sheet;
+    }
+    public Date formatterDate(String str){
+        String pat1 = "yyyy-MM-dd" ;
+        SimpleDateFormat sdf1 = new SimpleDateFormat(pat1) ;
+        Date date = null;
+        try {
+            date = sdf1.parse(str);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (date == null){date = new Date();}
+        return date;
     }
     public String translateWorkType(int type){
         if (type==1){
