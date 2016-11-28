@@ -102,16 +102,13 @@ public class GoodsDialog extends Dialog{
                 tv_value.setTextColor(context.getResources().getColor(R.color.white));
                 tv_value.setPadding(10, 5, 10, 5);
                 flowLayout.addView(tv_value);
-                String a = "";
                 for (int j = 0; j < showGoodsAttrIds.size(); j++) {
                     if(showGoodsAttrIds.get(j) == goodsAttrs.get(i).getGoodsAttrId()){
                         tv_value.setBackground(context.getResources().getDrawable(R.drawable.btn_white));
                         tv_value.setTextColor(context.getResources().getColor(R.color.black));
 //                        break;
                     }
-                    a += showGoodsAttrIds.get(j)+" ";
                 }
-                Log.d(TAG, showGoodsAttrIds.size() + "getView: " + a);
                 final int finalI = i;
                 tv_value.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -126,25 +123,32 @@ public class GoodsDialog extends Dialog{
 
     public ArrayList<Integer> getGoodsAttrIds(ArrayList<Attr> attrs,int goodsAttrId,ArrayList<Integer> goodsAttrIds){
 //        Log.d(TAG, goodsAttrId+"getGoodsAttrIds: "+attrs.toString());
+        Log.d(TAG, "getGoodsAttrIds: "+goodsAttrId);
         for (int i = 0; i < attrs.size(); i++) {
             Attr attr = attrs.get(i);
             for (int j = 0; j < attr.getGoodsAttrs().size(); j++) {
                 int nowGoodsAttrId = attr.getGoodsAttrs().get(j).getGoodsAttrId();
-                if (nowGoodsAttrId == goodsAttrId || goodsAttrId == 0){//goodsAttrId=0 初始展示所有
-                    Log.d(TAG, goodsAttrId+"getGoodsAttrIds: "+nowGoodsAttrId);
-                    goodsAttrIds.add(nowGoodsAttrId);
+                int parentAttrId = attr.getGoodsAttrs().get(j).getParentId();
+                if (nowGoodsAttrId == goodsAttrId || goodsAttrId==0){//goodsAttrId=0 初始展示所有
+                    for (int n = 0; n < attr.getGoodsAttrs().size(); n++) {
+                        addInt(goodsAttrIds, attr.getGoodsAttrs().get(n).getGoodsAttrId());
+                    }
                     ArrayList<Attr> childrenAttrs = attr.getChildren();
+                    addInt(goodsAttrIds, nowGoodsAttrId);
+                    if (parentAttrId != 0) addInt(goodsAttrIds, parentAttrId);
                     if (childrenAttrs!= null){
                         for (int k = 0; k < childrenAttrs.size(); k++) {
                             for (int l = 0; l < childrenAttrs.get(k).getGoodsAttrs().size(); l++) {
+                                if (childrenAttrs.get(k).getGoodsAttrs().get(l).getParentId() == goodsAttrId|| goodsAttrId==0)
                                 getGoodsAttrIds(childrenAttrs,childrenAttrs.get(k).getGoodsAttrs().get(l).getGoodsAttrId(),goodsAttrIds);
                             }
                         }
                     }
-                    break;
                 }else if(attr.getChildren() != null){
-                    goodsAttrIds.add(nowGoodsAttrId);
-                    getGoodsAttrIds(attr.getChildren(),goodsAttrId,goodsAttrIds);
+                    ArrayList<Integer> arrayList = getGoodsAttrIds(attr.getChildren(), goodsAttrId, goodsAttrIds);
+                    if (arrayList != null && arrayList.size() > goodsAttrIds.size()) {
+                        goodsAttrIds = arrayList;
+                    }
                 }
             }
         }
@@ -152,8 +156,20 @@ public class GoodsDialog extends Dialog{
     }
 
     public void setGoodsAttrId(int goodsAttrId) {
+        if (this.goodsAttrId == goodsAttrId){
+            goodsAttrId = 0;
+        }
         this.goodsAttrId = goodsAttrId;
-        showGoodsAttrIds = getGoodsAttrIds(goods.getAttrs(),goodsAttrId,showGoodsAttrIds);
+        showGoodsAttrIds = getGoodsAttrIds(goods.getAttrs(),goodsAttrId,new ArrayList<Integer>());
+        Log.d(TAG, goodsAttrId + "setGoodsAttrId: " + showGoodsAttrIds.toString());
         attrsAdapter.notifyDataSetChanged();
+    }
+    public void addInt(ArrayList<Integer> arrayList,int id){
+        boolean has = false;
+        for (int i = 0; i < arrayList.size(); i++) {
+            if(arrayList.get(i) == id)
+                has=!has;
+        }
+        if(!has) arrayList.add(id);
     }
 }
