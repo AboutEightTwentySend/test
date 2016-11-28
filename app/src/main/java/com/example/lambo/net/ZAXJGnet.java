@@ -1,6 +1,7 @@
 package com.example.lambo.net;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.example.lambo.dataclass.ZAXJGClass;
@@ -37,10 +38,12 @@ public class ZAXJGnet extends BaseNet {
             JSONObject data = js.getJSONObject("data");
             Gson gson = new Gson();
             zaxjg = gson.fromJson(data.toString(),new TypeToken<ZAXJGClass>(){}.getType());
-            Log.d(TAG, "netResponse: "+zaxjg.toString());
+            Log.d(TAG, "netResponse: " + zaxjg.toString());
             callBack.netResponse(this);
         } catch (JSONException e) {
             e.printStackTrace();
+            zaxjg = null;
+            callBack.netResponse(this);
         }
     }
 }

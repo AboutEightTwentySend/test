@@ -28,7 +28,7 @@ public abstract class BaseNet implements Runnable, Response.ErrorListener, Respo
     public JSONObject body;
     public VolleyError error;
 
-    private static Context context;
+    public static Context context;
     private static RequestQueue queue;
 
     public static void setContext(Context _context) {

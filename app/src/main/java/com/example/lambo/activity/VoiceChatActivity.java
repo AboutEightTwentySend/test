@@ -36,6 +36,7 @@ public class VoiceChatActivity extends Activity {
     Button btn1,btn2;
     MyListView lv1,lv2;
     Socket socket;
+    MediaRecorder recorder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,20 +64,19 @@ public class VoiceChatActivity extends Activity {
 //                    short bs = (short) AudioRecord.getMinBufferSize(22050,
 //                            AudioFormat.CHANNEL_CONFIGURATION_MONO,
 //                            AudioFormat.ENCODING_PCM_16BIT);
-//
-//                    AudioRecord ar = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPLE_RATE_IN_HZ,
+//                    AudioRecord ar = new AudioRecord(MediaRecorder.AudioSource.MIC, 3000,
 //                            AudioFormat.CHANNEL_CONFIGURATION_MONO,
 //                            AudioFormat.ENCODING_PCM_16BIT, bs);
-//                    MediaRecorder recorder=new MediaRecorder();
+//                    recorder=new MediaRecorder();
 //                    recorder.setAudioSource(MediaRecorder.AudioSource.MIC);//声音来源是话筒
 //                    recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);//设置格式
 //                    recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);//设置解码方式
-//                    recorder.setOnInfoListener(new MediaRecorder.OnInfoListener() {
-//                        @Override
-//                        public void onInfo(MediaRecorder mr, int what, int extra) {
-//
-//                        }
-//                    });
+//                    try {
+//                        recorder.prepare();
+//                        recorder.start();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
                 }
             }
         });
